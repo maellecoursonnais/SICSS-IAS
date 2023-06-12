@@ -235,7 +235,6 @@ Built an HTTP request (write a url) that searches for articles related to the AI
 
 
 ```{r libraries #1}
-#library(rvest)
 library(httr)
 ```
 

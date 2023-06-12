@@ -159,3 +159,52 @@ url <- "https://en.wikipedia.org/wiki/Grammy_Award_for_Best_Rap_Album"
 ```
 
 # 02. APIs to the rescue
+
+
+APIs (application programming interfaces) are sets of rules that allow different pieces of software to communicate and interact with each other. APIs define the way via which information and data can be exchanged between systems. They are usually not built to be used by an end-user, but rather to be incorporated into another piece of software. 
+In CSS, we encounter APIs usually when we would like to scrape some information for our analyses from the internet. In the next exercise, we will work with the Guardian API and get to know different ways how it can be accessed. [Here](https://open-platform.theguardian.com/documentation/) you can find the official documentation. To make the start a little bit easier, I listed some terminology: 
+
+- Endpoint: An API usually has different endpoints depending on which type of information one wants to retrieve. The Guardian API has an endpoint for content, tags, sections, editions, and single item. 
+- HTTP Methods: They are used to perform different operations on the endpoint, such as `Get` (get data), `POST` (send data), `PUT` (send updates), `DELETE` (delete data). 
+- Requests: HTTP requests are sent to a specific endpoint when querying an API. You can either formulate such a statement yourself, or you can try to find a package that does this for you ;) 
+- Response: APIs respond to an request with a HTTP response. The response usually contains a status message, meta data, as well as the requested piece of information or an error message. Most often, API responses come in JSON or XML format. 
+- Authentication: APIs often require an authentication to ensure secure access. 
+- Rate Limit: Most APIs come with an rate limit (i.e. only so and so many requests are allowed to be sent per time unit). 
+
+#### Exercice 4
+
+Let's try to formulate an HTTP request ourselves and send it to the Guardian API. The `httr` package will help us with this. You can install it via `install.packages("httr")` and attach it via `library(httr)`. [On this webside](https://open-platform.theguardian.com/explore/) you can explore how the Guardian API works. The API returns the entries distributed over several pages (by default, 10 articles per page). 
+
+Built an HTTP request (write a url) that searches for articles related to the AI in the technology section between a time window of your choice. Use the `GET` function of the `httr` package to send your request and collect the response. Print the total number of articles that are covered by your search and store the first ten returned articles in a dataframe. Print the number of pages.
+
+(If you, somewhere in the future, were to collect all the found articles, you could simply iterate over all pages).
+
+
+```{r libraries #1}
+library(httr)
+```
+
+```{r urls}
+#API_KEY <- "ENTER YOUR KEY HERE"
+
+```
+
+#### Exercice 5
+
+Writing HTTP requests can be a bit fiddly sometimes. There, however, is help! For many often queried APIs R (or Python) packages are available, which can make life a bit easier. 
+One package for the Guardian API is called `guardianapi`. For this task, select a Guadrian journalist who writes about a topic that interests you, find their ID, and use the function `gu_items` to query the number of articles they wrote when. Visualize in a histogram how active they were when and in which sections they got published most frequently. 
+
+```{r libraries #2}
+library(guardianapi)
+library(dplyr)
+library(lubridate)
+library(ggplot2)
+```
+
+```{r guardianapi}
+# enter API key
+gu_api_key(check_env = FALSE)
+
+
+
+```

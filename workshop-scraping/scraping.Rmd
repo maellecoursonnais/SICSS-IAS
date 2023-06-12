@@ -125,12 +125,25 @@ If you don't know exactly what selector you need, I highly recommend using [Sele
 7.  Select all elements with an `id`.
 
 ```{r}
+#1. A comma for several tags
 html_elements(html_example, "h1, h2")
+
+#2. A dot for the class
 html_elements(html_example, ".important")
+
+#3. A hash for an id
 html_elements(html_example, "#first")
+
+#4. Combination of tag and class
 html_elements(html_example, "h2.important")
+
+#5. A comma again
 html_elements(html_example, "title, p")
+
+#6. A blank for nested elements
 html_elements(html_example, "p a")
+
+#7. Square brackets for a target attribute
 html_elements(html_example, "[id]")
 ```
 
@@ -146,12 +159,18 @@ From `html_example`:
 2.  Get all the links.
 
 ```{r}
+#1.
 html_example %>% 
+  #Text is situated in the title and the body
   html_elements("body, title") %>% 
+  #html_text2 to extract the text
   html_text2()
 
+#2.
 html_example %>% 
+  #a tags refer to hyperlinks
   html_elements("a") %>% 
+  #href is the attribute for the hyperlink
   html_attr("href")
 ```
 
@@ -167,16 +186,25 @@ For this exercise, feel free to use the [Selector Gadget](javascript:(function()
 
 ```{r}
 url <- "https://en.wikipedia.org/wiki/Grammy_Award_for_Best_Rap_Album"
+
+#1.
 wp <- read_html(url)
 
+#2. 
 tab <- 
   wp %>% 
+  #Select the table elements with class wikitable. 
   html_element("table.wikitable") %>% 
+  #Turn into a R data.frame with `html_table` 
   html_table()
 
+#3.
+#Extract the recipients name with some regex
 recipients <- gsub("·.*", " ", tab$`Recipient(s)`) %>% str_trim("both")
 
-wp %>% 
+#With the selector gadget, you can isolate the right css selector to get the 
+#recipients column, including the links (not possible `html_table`).
+wp %>%
   html_elements(".wikitable td:nth-child(2)") %>% 
   html_elements("a") %>% 
   html_attr("href")

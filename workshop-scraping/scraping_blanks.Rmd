@@ -145,7 +145,7 @@ From `html_example`:
 
 ### Real example -- Exercise 3
 
-In this exercise, we are going to scrape a Wikipedia page.
+In this exercise, we are going to scrape a [Wikipedia page](https://en.wikipedia.org/wiki/Grammy_Award_for_Best_Rap_Album).
 
   1. Read the page. 
   2. Extract the table from the "Recipients" section (Hint: check `html_table`).
@@ -154,6 +154,7 @@ In this exercise, we are going to scrape a Wikipedia page.
 For this exercise, feel free to use the [Selector Gadget](javascript:(function()%7Bvar%20s=document.createElement('div');s.innerHTML='Loading...';s.style.color='black';s.style.padding='20px';s.style.position='fixed';s.style.zIndex='9999';s.style.fontSize='3.0em';s.style.border='2px%20solid%20black';s.style.right='40px';s.style.top='40px';s.setAttribute('class','selector_gadget_loading');s.style.background='white';document.body.appendChild(s);s=document.createElement('script');s.setAttribute('type','text/javascript');s.setAttribute('src','https://dv0akt2986vzh.cloudfront.net/unstable/lib/selectorgadget.js');document.body.appendChild(s);%7D)();) -- just drag it into your bookmarks list. 
 
 ```{r}
+url <- "https://en.wikipedia.org/wiki/Grammy_Award_for_Best_Rap_Album"
 ...
 ```
 

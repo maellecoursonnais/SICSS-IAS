@@ -183,3 +183,68 @@ wp %>%
 ```
 
 # 02. APIs to the rescue
+
+```{r libraries #1}
+library(rvest)
+library(httr)
+```
+
+```{r urls}
+API_KEY <- "ENTER YOUR KEY HERE"
+q <- 'Brexit'
+sectionName <- "politics"
+fromDate <- "2023-01-01"
+toDate <- "2023-06-12"
+
+final_url = paste0("https://content.guardianapis.com/search?/q=", q, "&format=json&section=", sectionName, "&from-date=", fromDate, "&to-date=", toDate, "&page=1&page-size=10&order-by=newest&production-office=uk&lang=en&api-key=", API_KEY)
+
+
+response <- GET(final_url)
+```
+
+
+
+```{r libraries #2}
+library(guardianapi)
+library(dplyr)
+library(lubridate)
+library(ggplot2)
+```
+
+```{r guardianapi}
+gu_api_key(check_env = FALSE)
+
+hern_search <- gu_items(query = "profile/alex-hern")#, from_date = fromDate, to_date = toDate)
+tibble::glimpse(hern_search)
+
+hern_articles <- hern_search %>% 
+  select(section_id, web_publication_date, web_title) %>%
+  filter(web_publication_date >= as.Date("2014-01-01"),
+         web_publication_date <= as.Date("2022-12-31")) %>%
+  mutate(date = as.Date(web_publication_date, format = "%Y-%m-%d %h:%m:%s CEST")) %>%
+  mutate(year = lubridate::year(date), month = lubridate::month(date), day = lubridate::day(date)) 
+hern_articles$date <- as.Date(sprintf("%04d-%02d-15", hern_articles$year, hern_articles$month))
+
+# Plot a histogram using ggplot2
+ggplot(data=hern_articles, aes(x = date)) +
+  geom_histogram(binwidth = 30, fill = "lightblue", color = "white") +
+  labs(x = "Year", y = "Number of published articles", title = "Number of articles written by Alex Hern over time")
+
+
+### average number of Stars he received
+
+hern_section <- hern_search %>% 
+  filter(!is.na(section_id)) %>% 
+  select(section_id, web_publication_date, web_title) %>%
+  filter(web_publication_date >= as.Date("2014-01-01"),
+         web_publication_date <= as.Date("2022-12-31")) %>%
+  mutate(date = as.Date(web_publication_date, format = "%Y-%m-%d %h:%m:%s CEST")) %>%
+  mutate(year = lubridate::year(date), month = lubridate::month(date), day = lubridate::day(date)) 
+hern_section$date <- as.Date(sprintf("%04d-%02d-15", hern_section$year, hern_section$month))
+
+ggplot(data=hern_section, aes(x=date,fill = section_id)) + 
+  geom_histogram(binwidth = 30) +
+  scale_colour_discrete() +
+  labs(x = "Values", y = "Frequency", title = "Number of articles written by Alex Hern over time")
+
+```

@@ -1,0 +1,456 @@
+---
+format: 
+  revealjs:
+    slide-number: true
+    width: 1600
+    height: 900
+    #logo: 
+    footer: "Spatial Data in R"
+    css: styles.css
+    theme: simple
+    echo: true
+    callout-icon: false
+    code-overflow: wrap
+    preview-links: auto
+editor: source
+freeze: true
+---
+
+# Day 5 - Spatial Data with R {background-image="images/map_bgd.png" background-position="right" background-size="contain"}
+
+```{r}
+#| echo: false
+library(patchwork)
+library(sf)
+library(spData)
+library(terra)
+library(ggplot2)
+```
+
+<h2>SICSS-IAS 2023</h2>
+
+<h3>Maël Lecoursonnais \| 2023-06-16</h3>
+
+## Overview of this morning {background-image="images/map_bgd.png" background-position="right" background-size="contain"}
+
+::: incremental
+-   Lecture
+    -   What is spatial data?
+    -   What can we do with it?
+    -   How to access it?
+    -   How to make sense of it in CSS research?
+-   Workshop
+:::
+
+. . .
+
+All in ![](https://www.r-project.org/logo/Rlogo.png){.center}!
+
+## Prerequisites {background-image="images/map_bgd.png" background-position="right" background-size="contain"}
+
+::: incremental
+-   ![](https://www.r-project.org/logo/Rlogo.png){.center} installed
+-   Basic knowledge of R and the `tidyverse`
+-   Packages and dependencies: `sf`, `terra`, `leaflet`, `tmap`, `dplyr`
+:::
+
+## What is spatial data
+
+. . .
+
+> Spatial data is any type of data that directly or indirectly references a specific geographical area or location.
+
+::: incremental
+- Places
+- Countries, regions, cities
+- Rivers, roads, trails networks
+- Satellite images  
+:::
+
+. . .
+
+Spatial data combines *geospatial coordinates* with *attributes* of those coordinates.
+
+
+## The two types of spatial data
+
+
+![© Fernanda Ochoa](images/vector_vs_raster.png){fig-align="center" fig-cap-location="center" .caption-right}
+
+## Raster data
+
+> Matrix of cells/pixels that contains each a value.
+
+::: columns
+::: {.column width="50%"}
+::: fragment
+Useful for continuous phenomena:
+
+::: incremental
+-   Elevation
+-   Satellite imagery
+-   Remote sensing
+:::
+:::
+
+::: fragment
+Each cell can contain one (e.g., elevation) or multiple attributes (e.g. RGB). Those layers are called "bands". 
+:::
+:::
+
+::: {.column width="50%"}
+::: fragment
+```{r}
+#| echo: false
+par(mar = c(0, 0, 0, 0))
+
+image(volcano)
+```
+:::
+:::
+:::
+
+## In R
+
+::: {.panel-tabset}
+
+### Plot
+
+```{r}
+#| output-location: column
+#| echo: -1
+par(mar = c(0, 0, 0, 0))
+image(volcano)
+```
+
+### Matrix
+
+```{r}
+#| output-location: column
+volcano[1:10, 1:10]
+```
+
+### `terra`
+
+```{r}
+#| output-location: column
+terra::rast(volcano)
+```
+
+:::
+
+
+## Vector data
+
+> The vector data model represents the world using points, lines and polygons. They are well-defined geometries in a coordinate reference system (CRS).
+
+::: columns
+::: {.column width="50%"}
+::: fragment
+Useful for discrete phenomena:
+
+::: incremental
+-   rivers
+-   frontiers
+-   human settlements
+:::
+
+:::
+
+::: fragment
+Each element (geometries) can be associated with a range of attributes in a data frame.
+:::
+:::
+
+::: {.column width="50%"}
+```{r}
+#| echo: false
+par(mar = c(0, 0, 0, 0))
+plot(st_geometry(nz))
+```
+:::
+:::
+
+
+## Geometries in vector data
+
+There are mainly three shapes, so-called geometries, or feature, in the `sf` framework:
+
+::: .incremental
+- points,
+- lines, 
+- and polygons
+:::
+
+. . . 
+
+They all have "multi-"counterparts: multipoints, multilines, and multipolygons.
+
+## Geometries in vector data
+
+::: {.panel-tabset}
+
+### Points
+
+A *point* is a coordinate in $n$ dimensions (usually 2).
+```{r, tidy.opts=list(width.cutoff=40)}
+#| output-location: column
+#| echo: -1
+#| tidy: true
+
+par(mfrow = c(1, 2))
+
+library(sf)
+
+point <- st_point(c(6, 2))
+multipoint <- st_multipoint(rbind(c(3.2,4), c(3,4.6), c(3.8,4.4), c(3.5,3.8), c(3.4,3.6), c(3.9,4.5)))
+
+plot(point, axes = TRUE, cex = 3, lwd = 2, 
+     main = "POINT") 
+plot(multipoint, axes = TRUE, cex = 3, lwd = 2, 
+     main = "MULTIPOINT")
+```
+
+### Linestrings
+
+A *linestring* is a sequence of points with a straight line connecting the points
+```{r, tidy.opts=list(width.cutoff=40)}
+#| output-location: column
+#| echo: -1
+#| tidy: true
+par(mfrow = c(1, 2))
+
+s1 <- rbind(c(0,3), c(0,4), c(1,5), c(2,5))
+linestring <- st_linestring(s1)
+multilinestring <- st_multilinestring(list(s1, s1 / 2, s1 / 2 + 2))
+
+plot(linestring, axes = TRUE, lwd = 2, 
+     main = "LINESTRING") 
+plot(multilinestring, axes = TRUE, lwd = 2, 
+     main = "MULTILINESTRING")
+```
+
+### Polygons
+
+A *polygon* is a sequence of points that form a closed, non-intersecting ring. The first and the last point of a polygon have the same coordinates.
+
+```{r, tidy.opts=list(width.cutoff=40)}
+#| output-location: column
+#| echo: -1
+#| tidy: true
+par(mfrow = c(1, 2))
+
+p1 <- rbind(c(0,0), c(1,0), c(3,2), c(2,4), c(1,4), c(0,0))
+p2 <- rbind(c(1,1), c(1,2), c(2,2), c(1,1))
+polygon <- st_polygon(list(p1,p2))
+
+multipolygon <- st_multipolygon(list(list(p1, p2), list(p2 * 2 + 2)))
+
+plot(polygon, axes = TRUE, lwd = 2, 
+     main = "POLYGON", col = "grey")
+plot(multipolygon, axes = TRUE, lwd = 2, 
+     main = "MULTIPOLYGON", col = "grey")
+```
+
+### Geometry collection
+
+A *geometry collection* is a set of multiple object from different geometries.
+
+```{r, tidy.opts=list(width.cutoff=40)}
+#| output-location: column
+#| tidy: true
+gc <- st_geometrycollection(list(polygon, point, linestring))
+
+plot(gc, axes = TRUE, lwd = 2, cex = 3,
+     main = "GEOMETRY COLLECTION", col = "grey")
+```
+
+:::
+
+
+## Geometries in vector data
+
+![© https://r.geocompx.org/](https://r.geocompx.org/figures/sf-classes.png){fig-align="center" fig-cap-location="center" .caption-right}
+
+## In R
+
+::: {.panel-tabset}
+
+### Plot
+
+```{r}
+#| echo: -1
+#| output-location: column
+par(mar = c(0, 0, 0, 0))
+nz <- spData::nz
+plot(st_geometry(nz))
+```
+
+### `sf`
+An `sf` object includes classical `data.frame` elements (columns, rows, column names...) and geographic properties (`sfc` object).
+```{r}
+#| output-location: column
+st_as_sf(nz) |> head()
+```
+
+### `data.frame`
+One can get the `data.frame` part like this:
+```{r}
+#| output-location: column
+st_drop_geometry(nz)
+```
+
+### `sfc`
+And the geometry part, the so-called `sfc` object:
+```{r}
+#| output-location: column
+st_as_sfc(nz)
+```
+
+:::
+
+## Projections
+
+
+
+## We don't have so much time
+
+So we will focus on vector data. 
+
+. . .
+
+Most CSS scholars use vector data. 
+
+## Spatial data operations: joins
+
+`sf` is a `data.frame` + `sfc`, so most (if not all) basic operations that can be done on a `data.frame` can be done in a `sf` object.
+
+```{r}
+#| output-location: column
+#| echo: -1
+
+par(mar = c(0, 0, 0, 0))
+# Subset
+south_provinces <- nz[nz$Island == "South", ]
+
+# Union 
+south_nz <- st_union(south_provinces)
+
+# Join / intersection
+nz_height_south <- nz_height[south_nz, ]
+#Same: st_intersection(nz_height, south_nz)
+#Or, st_filter(nz_height, south_nz)
+
+# Plot 
+ggplot() +
+  geom_sf(data = nz[nz$Island == "South", ]) +
+  geom_sf(data = nz_height_south, shape = 2, col = "red") +
+  theme_minimal()
+```
+
+. . .
+
+A lot of other join possibilities: `st_intersects`, `st_touches`, `st_overlaps`, `st_contains`, `st_contains_properly`, `st_covers`, `st_within`, `st_covered_by`, `st_disjoint`.
+```{r}
+#| output: false
+# Not in south_nz
+nz_height[south_nz, , op = st_disjoint]
+```
+
+## Spatial data operations: distance
+
+```{r}
+#| echo: -6
+#| output-location: column
+#| results: hold
+
+library(sf)
+library(spData)
+
+cat("#Distance matrix\n")
+st_distance(nz_height[1:3, ], nz_height[1:3, ])
+cat("\n")
+
+cat("#Nearest feature\n")
+centroids <- st_centroid(nz)
+st_nearest_feature(nz_height[1:10, ], centroids)
+```
+. . .
+
+A lot of other possibilites! see the list of functions [here](https://r-spatial.github.io/sf/reference/index.html).
+
+
+## Spatial data for CSS
+
+How to link spatial data with CSS? 
+
+. . .
+
+Increasing availability of fine-grained, large-scale geographical data.
+
+::: .incremental
+- GSM (mobile) data
+- Remote sensing data 
+- Digital trace data
+- Collaborative 
+:::
+
+. . .
+
+Allows to extend standard research with new possibilities:
+
+::: .incremental
+- Explore people's everyday mobility (Alessandretti)
+- Assess poverty with satellite data (Daoud, Science paper)
+- Extend segregation research to other parts of the activity space
+:::
+
+## Example I: The Atlas of Inequality
+
+```{=html}
+<iframe width="1500" height="800" src="https://inequality.media.mit.edu/" title="Quarto Documentation"></iframe>
+```
+
+## [Example II - Jean et al. 2016](https://www.science.org/doi/pdf/10.1126/science.aaf7894)
+
+:::: columns
+::: {.column width="60%"}
+
+Estimate poverty with satellite imagery.
+
+> Scarce data in developing countries: hard to assess geographical variation in poverty or affluence.
+
+Use neural network with satellite data to predict poverty. 
+
+> Validation with survey data from some countries: the predictions explain up to 75% of the variation in local-level economic outcomes. 
+
+Open access data, scalable, low-cost.
+
+:::
+
+::: {.column width="40%"}
+
+![](images/jean.png)
+:::
+::::
+
+
+## Example III: Candipan et al. 2021
+
+Use Twitter data to retrieve mobility patterns in the U.S.
+
+> RQ: How segregated are the mobility patterns of Americans? 
+
+Estimate the so-called segregated mobility index (SMI) to estimate segregation at the neighborhood level. Contact between neighborhoods.
+
+> "The racial segregation of a city becomes the extent to which residents fail to travel to different types of neighbourhoods with varying racial/ethnic compositions, controlling for the racial composition of a city’s neighbourhoods."
+
+Use **133,766,610** geotagged tweets from **375,504** individuals. Retrieve the place of residence by checking evening and early-morning tweets' location. 
+
+> The authors find that segregation goes beyond the place of residence, even though residential segregation is a key predictor of the SMI.
+
+
+## Workshop
+
+Check the `workshop_spatial.R` file
+

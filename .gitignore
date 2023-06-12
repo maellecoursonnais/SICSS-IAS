@@ -47,3 +47,11 @@ po/*~
 
 # RStudio Connect folder
 rsconnect/
+
+/workshop-nlp
+/example_qmd
+
+/spatial-data/lecture/lecture_files
+/spatial-data/Skeleton_Spatial_Data.docx
+
+workshop-scraping.txt

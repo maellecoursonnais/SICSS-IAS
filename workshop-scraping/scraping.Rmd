@@ -2,13 +2,16 @@
 title: "workshop-scraping"
 author: "Maël Lecoursonnais & Alexandra Rottenkolber"
 date: "2023-06-09"
-output:
-  html_notebook: default
-  html_document:
-    df_print: paged
+output: html_document
 editor_options:
   chunk_output_type: console
 ---
+
+```{css, echo = FALSE}
+  body{
+  font-size: 13pt;
+}
+```
 
 In this first part, we are going to see how to access data from the web. There are mainly two ways to do this: either by reading the HMTL code linked to a webpage, or by accessing the data through an API.
 
@@ -245,7 +248,7 @@ library(httr)
 ```
 
 ```{r urls}
-#API_KEY <- "ENTER YOUR KEY HERE"
+#GU_API_KEY <- "ENTER YOUR KEY HERE"
 
 # set parameters
 q <- 'AI' # query term

@@ -2,13 +2,16 @@
 title: "workshop-scraping"
 author: "Maël Lecoursonnais & Alexandra Rottenkolber"
 date: "2023-06-09"
-output:
-  html_notebook: default
-  html_document:
-    df_print: paged
+output: html_document
 editor_options:
   chunk_output_type: console
 ---
+
+```{css, echo = FALSE}
+  body{
+  font-size: 13pt;
+}
+```
 
 In this first part, we are going to see how to access data from the web. There are mainly two ways to do this: either by reading the HMTL code linked to a webpage, or by accessing the data through an API.
 
@@ -123,7 +126,7 @@ Check [here](https://www.w3schools.com/cssref/css_selectors.php) for more!
 
 If you don't know exactly what selector you need, I highly recommend using [SelectorGadget](https://rvest.tidyverse.org/articles/selectorgadget.html), which lets you automatically generate the selector you need by supplying positive and negative examples in the browser.
 
-#### Exercice 1
+### Exercice 1
 
 1.  Using `rvest::html_elements`, select all headings from `html_example`.
 2.  Select all elements with class "important".
@@ -141,7 +144,7 @@ If you don't know exactly what selector you need, I highly recommend using [Sele
 
 The next step is to extract the text from the selected html elements. To get the text inside a tag, use `html_text` or `html_text2` (squeeze the blanks). To get the text inside an attribute, use `html_attr`.
 
-#### Exercise 2
+### Exercise 2
 
 From `html_example`:
 
@@ -169,7 +172,6 @@ url <- "https://en.wikipedia.org/wiki/Grammy_Award_for_Best_Rap_Album"
 
 # 02. APIs to the rescue
 
-
 APIs (application programming interfaces) are sets of rules that allow different pieces of software to communicate and interact with each other. APIs define the way via which information and data can be exchanged between systems. They are usually not built to be used by an end-user, but rather to be incorporated into another piece of software. 
 In CSS, we encounter APIs usually when we would like to scrape some information for our analyses from the internet. In the next exercise, we will work with the Guardian API and get to know different ways how it can be accessed. [Here](https://open-platform.theguardian.com/documentation/) you can find the official documentation. To make the start a little bit easier, I listed some terminology: 
 
@@ -180,7 +182,7 @@ In CSS, we encounter APIs usually when we would like to scrape some information 
 - Authentication: APIs often require an authentication to ensure secure access. 
 - Rate Limit: Most APIs come with an rate limit (i.e. only so and so many requests are allowed to be sent per time unit). 
 
-#### Exercice 4
+## Exercice 4
 
 Let's try to formulate an HTTP request ourselves and send it to the Guardian API. The `httr` package will help us with this. You can install it via `install.packages("httr")` and attach it via `library(httr)`. [On this website](https://open-platform.theguardian.com/explore/) you can explore how the Guardian API works. The API returns the entries distributed over several pages (by default, 10 articles per page). 
 
@@ -189,7 +191,7 @@ Build an HTTP request (write a url) that searches for articles related to the AI
 (If you, somewhere in the future, were to collect all the found articles, you could simply iterate over all pages).
 
 ```{r libraries #1}
-library(httr)
+# library(httr)
 ```
 
 ```{r urls}
@@ -197,21 +199,20 @@ library(httr)
 #...
 ```
 
-#### Exercice 5
+## Exercice 5
 
 Writing HTTP requests can be a bit fiddly sometimes. There, however, is help! For many often queried APIs R (or Python) packages are available, which can make life a bit easier. 
 One package for the Guardian API is called `guardianapi`. For this task, select a Guadrian journalist who writes about a topic that interests you, find their ID, and use the function `gu_items` to query the number of articles they wrote when. Visualize in a histogram how active they were when and in which sections they got published most frequently. 
 
 ```{r libraries #2}
-library(guardianapi)
-library(dplyr)
-library(lubridate)
-library(ggplot2)
+# library(guardianapi)
+# library(dplyr)
+# library(lubridate)
+# library(ggplot2)
 ```
 
 ```{r guardianapi}
-# enter API key
-gu_api_key(check_env = FALSE)
-
+#enter API key
+#gu_api_key(check_env = FALSE)
 #...
 ```

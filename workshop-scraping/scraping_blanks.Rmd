@@ -164,7 +164,8 @@ In this exercise, we are going to scrape a [Wikipedia page](https://en.wikipedia
   1. Read the page. 
   2. Extract the table from the "Recipients" section (Hint: check `html_table`).
   3. Get the names of all (main) recipients and the URL to their Wikipedia page. (Hint: you'll probably need to use regular expressions somewhere. Here's a set of documentation you can use if you've never worked with them: [1](https://evoldyn.gitlab.io/evomics-2018/ref-sheets/R_strings.pdf), [2](https://bookdown.org/f_lennert/book-toolbox_css/digital-trace-data.html#regular-expressions), [3](https://www.datacamp.com/cheat-sheet/regular-expresso).)
-  
+  4. Get the names of all nominees. Who got the most nominations?
+
 For this exercise, feel free to use the [Selector Gadget](javascript:(function()%7Bvar%20s=document.createElement('div');s.innerHTML='Loading...';s.style.color='black';s.style.padding='20px';s.style.position='fixed';s.style.zIndex='9999';s.style.fontSize='3.0em';s.style.border='2px%20solid%20black';s.style.right='40px';s.style.top='40px';s.setAttribute('class','selector_gadget_loading');s.style.background='white';document.body.appendChild(s);s=document.createElement('script');s.setAttribute('type','text/javascript');s.setAttribute('src','https://dv0akt2986vzh.cloudfront.net/unstable/lib/selectorgadget.js');document.body.appendChild(s);%7D)();) -- just drag it into your bookmarks list. 
 
 ```{r}

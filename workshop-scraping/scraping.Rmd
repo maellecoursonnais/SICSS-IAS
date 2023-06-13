@@ -13,6 +13,8 @@ editor_options:
 }
 ```
 
+> This lab and the solutions are available here: https://github.com/maellecoursonnais/SICSS-IAS/tree/main/workshop-scraping. 
+
 In this first part, we are going to see how to access data from the web. There are mainly two ways to do this: either by reading the HMTL code linked to a webpage, or by accessing the data through an API.
 
 In both cases, we extract data in formats that are not directly readable by R, so we need to be able to convert those in desirable formats.

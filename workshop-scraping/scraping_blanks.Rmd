@@ -186,7 +186,7 @@ In CSS, we encounter APIs usually when we would like to scrape some information 
 
 Let's try to formulate an HTTP request ourselves and send it to the Guardian API. The `httr` package will help us with this. You can install it via `install.packages("httr")` and attach it via `library(httr)`. [On this website](https://open-platform.theguardian.com/explore/) you can explore how the Guardian API works. The API returns the entries distributed over several pages (by default, 10 articles per page). 
 
-Build an HTTP request (write a url) that searches for articles related to the AI in the technology section between a time window of your choice. Use the `GET` function of the `httr` package to send your request and collect the response. Print the total number of articles that are covered by your search and store the first ten returned articles in a dataframe. Print the number of pages.
+Build an HTTP request (write a url) that searches for articles related to AI in the technology section between a time window of your choice. Use the `GET` function of the `httr` package to send your request and collect the response. Print the total number of articles that are covered by your search and store the first ten returned articles in a dataframe. Print the number of pages.
 
 (If you, somewhere in the future, were to collect all the found articles, you could simply iterate over all pages).
 
@@ -202,7 +202,7 @@ Build an HTTP request (write a url) that searches for articles related to the AI
 ## Exercice 5
 
 Writing HTTP requests can be a bit fiddly sometimes. There, however, is help! For many often queried APIs R (or Python) packages are available, which can make life a bit easier. 
-One package for the Guardian API is called `guardianapi`. For this task, select a Guadrian journalist who writes about a topic that interests you, find their ID, and use the function `gu_items` to query the number of articles they wrote when. Visualize in a histogram how active they were when and in which sections they got published most frequently. 
+One package for the Guardian API is called `guardianapi`. For this task, select a Guardian journalist who writes about a topic that interests you, find their ID, and use the function `gu_items` to query the number of articles they wrote when. Visualize in a histogram how active they were when and in which sections they got published most frequently. 
 
 ```{r libraries #2}
 # library(guardianapi)

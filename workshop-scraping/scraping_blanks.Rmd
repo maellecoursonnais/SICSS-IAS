@@ -77,6 +77,7 @@ Here's a depiction of the usual workflow:
 Let's start with a minimal example:
 
 ```{r}
+#install.packages("rvest")
 library(rvest) #Also loads `xml2`
 html_example <- minimal_html('
     <html>
@@ -96,7 +97,7 @@ html_example <- minimal_html('
 ')
 ```
 
-HTML pages are complex, and even in a simple example like the one above, it can be hard to navigate and the retrieve necessary information. This is where CSS selectors and XPath come to the rescue! CSS selectors and XPath are two different ways to access information on HTML pages.
+HTML pages are complex, and even in a simple example like the one above, it can be hard to navigate and the retrieve necessary information. This is where CSS selectors and XPath come to the rescue! CSS selectors and XPath are two different ways to access information on HTML pages. Today, we will only cover CSS selectors, but know XPath exists. It is a little bit more verbose, but it can be much more efficient. 
 
 ### CSS selectors
 
@@ -129,7 +130,7 @@ If you don't know exactly what selector you need, I highly recommend using [Sele
 3.  Select all elements with id "first".
 4.  Select all headings with class "important".
 5.  Select all `title` and `p` elements.
-6.  Select all hyperlinks elements that are nested in a paragraph.
+6.  Select all hyperlink elements that are nested in a paragraph.
 7.  Select all elements with an `id`.
 
 ```{r}
@@ -157,7 +158,7 @@ In this exercise, we are going to scrape a [Wikipedia page](https://en.wikipedia
 
   1. Read the page. 
   2. Extract the table from the "Recipients" section (Hint: check `html_table`).
-  3. Get the names of all (main) recipients and the URL to their Wikipedia page.
+  3. Get the names of all (main) recipients and the URL to their Wikipedia page. (Hint: you'll probably need to use regular expressions somewhere. Here's a set of documentation you can use if you've never worked with them: [1](https://evoldyn.gitlab.io/evomics-2018/ref-sheets/R_strings.pdf), [2](https://bookdown.org/f_lennert/book-toolbox_css/digital-trace-data.html#regular-expressions), [3](https://www.datacamp.com/cheat-sheet/regular-expresso).)
   
 For this exercise, feel free to use the [Selector Gadget](javascript:(function()%7Bvar%20s=document.createElement('div');s.innerHTML='Loading...';s.style.color='black';s.style.padding='20px';s.style.position='fixed';s.style.zIndex='9999';s.style.fontSize='3.0em';s.style.border='2px%20solid%20black';s.style.right='40px';s.style.top='40px';s.setAttribute('class','selector_gadget_loading');s.style.background='white';document.body.appendChild(s);s=document.createElement('script');s.setAttribute('type','text/javascript');s.setAttribute('src','https://dv0akt2986vzh.cloudfront.net/unstable/lib/selectorgadget.js');document.body.appendChild(s);%7D)();) -- just drag it into your bookmarks list. 
 
@@ -175,18 +176,17 @@ In CSS, we encounter APIs usually when we would like to scrape some information 
 - Endpoint: An API usually has different endpoints depending on which type of information one wants to retrieve. The Guardian API has an endpoint for content, tags, sections, editions, and single item. 
 - HTTP Methods: They are used to perform different operations on the endpoint, such as `Get` (get data), `POST` (send data), `PUT` (send updates), `DELETE` (delete data). 
 - Requests: HTTP requests are sent to a specific endpoint when querying an API. You can either formulate such a statement yourself, or you can try to find a package that does this for you ;) 
-- Response: APIs respond to an request with a HTTP response. The response usually contains a status message, meta data, as well as the requested piece of information or an error message. Most often, API responses come in JSON or XML format. 
+- Response: APIs respond to a request with a HTTP response. The response usually contains a status message, meta data, as well as the requested piece of information or an error message. Most often, API responses come in JSON or XML format. 
 - Authentication: APIs often require an authentication to ensure secure access. 
 - Rate Limit: Most APIs come with an rate limit (i.e. only so and so many requests are allowed to be sent per time unit). 
 
 #### Exercice 4
 
-Let's try to formulate an HTTP request ourselves and send it to the Guardian API. The `httr` package will help us with this. You can install it via `install.packages("httr")` and attach it via `library(httr)`. [On this webside](https://open-platform.theguardian.com/explore/) you can explore how the Guardian API works. The API returns the entries distributed over several pages (by default, 10 articles per page). 
+Let's try to formulate an HTTP request ourselves and send it to the Guardian API. The `httr` package will help us with this. You can install it via `install.packages("httr")` and attach it via `library(httr)`. [On this website](https://open-platform.theguardian.com/explore/) you can explore how the Guardian API works. The API returns the entries distributed over several pages (by default, 10 articles per page). 
 
-Built an HTTP request (write a url) that searches for articles related to the AI in the technology section between a time window of your choice. Use the `GET` function of the `httr` package to send your request and collect the response. Print the total number of articles that are covered by your search and store the first ten returned articles in a dataframe. Print the number of pages.
+Build an HTTP request (write a url) that searches for articles related to the AI in the technology section between a time window of your choice. Use the `GET` function of the `httr` package to send your request and collect the response. Print the total number of articles that are covered by your search and store the first ten returned articles in a dataframe. Print the number of pages.
 
 (If you, somewhere in the future, were to collect all the found articles, you could simply iterate over all pages).
-
 
 ```{r libraries #1}
 library(httr)
@@ -194,7 +194,7 @@ library(httr)
 
 ```{r urls}
 #API_KEY <- "ENTER YOUR KEY HERE"
-
+...
 ```
 
 #### Exercice 5

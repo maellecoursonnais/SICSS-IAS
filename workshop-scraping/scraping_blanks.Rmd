@@ -134,7 +134,7 @@ If you don't know exactly what selector you need, I highly recommend using [Sele
 7.  Select all elements with an `id`.
 
 ```{r}
-...
+#...
 ```
 
 ### Extract the data
@@ -149,7 +149,7 @@ From `html_example`:
 2.  Get all the links.
 
 ```{r}
-...
+#...
 ```
 
 ### Real example -- Exercise 3
@@ -164,7 +164,7 @@ For this exercise, feel free to use the [Selector Gadget](javascript:(function()
 
 ```{r}
 url <- "https://en.wikipedia.org/wiki/Grammy_Award_for_Best_Rap_Album"
-...
+#...
 ```
 
 # 02. APIs to the rescue
@@ -194,7 +194,7 @@ library(httr)
 
 ```{r urls}
 #API_KEY <- "ENTER YOUR KEY HERE"
-...
+#...
 ```
 
 #### Exercice 5
@@ -213,6 +213,5 @@ library(ggplot2)
 # enter API key
 gu_api_key(check_env = FALSE)
 
-
-
+#...
 ```

@@ -14,6 +14,10 @@ In this first part, we are going to see how to access data from the web. There a
 
 In both cases, we extract data in formats that are not directly readable by R, so we need to be able to convert those in desirable formats.
 
+# 00. Things we are not covering today
+Web scraping encompasses a lot of methods, and today we'll be focusing on simple cases. We will not cover user simulation (check `rvest::html_session`), `RSelenium`, or forms (check `rvest::html_form_set`). There is a ton of documentation on those if you want to dig more! 
+
+
 # 01. Scraping the web from scratch
 
 Since most the web is written in HTML, scraping the web from scratch requires to know a little bit of HTML. So here's a HTML 101:
@@ -65,6 +69,10 @@ Those attributes will not appear in the actual content. Moreover, they are super
 ## Read a webpage in R
 
 To read a webpage, we can use the `rvest` and `xml2` packages. `xml2::read_html` reads a HTML page from a URL or HTML file.
+
+Here's a depiction of the usual workflow:
+
+![](https://raw.githubusercontent.com/yusuzech/r-web-scraping-cheat-sheet/master/resources/functions_and_classes.png)
 
 Let's start with a minimal example:
 

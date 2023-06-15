@@ -27,9 +27,9 @@ library(terra)
 library(ggplot2)
 ```
 
-<h2>SICSS-IAS 2023</h2>
+<h2>[SICSS-IAS 2023](https://github.com/IAS-LiU/SICSS-2023/tree/main)</h2>
 
-<h3>Maël Lecoursonnais \| 2023-06-16</h3>
+<h3>[Maël Lecoursonnais](https://maellecoursonnais.github.io/) \| 2023-06-16</h3>
 
 ## Overview of this morning {background-image="images/map_bgd.png" background-position="right" background-size="contain"}
 
@@ -311,6 +311,62 @@ st_as_sfc(nz)
 
 ## Projections
 
+::::: columns
+:::: {.column width="60%"}
+
+Any type of spatial data share a common trait: they need to use a *coordinate reference systems (CRS)* in order to project points/geometries onto maps.
+
+::: fragment
+Projected CRS are a type of CRS that transforms the surface of a globe into a plane.
+:::
+
+::::
+
+:::: {.column width="40%"}
+
+![](images/PROJ.jpg){width=100%}
+::::
+:::::
+
+## Projections in R
+
+```{r}
+#| echo: true
+#| output: false
+
+library(sf)
+
+st_crs(world)
+# Coordinate Reference System:
+#   User input: EPSG:4326
+#   ...
+
+#Mollweide projection
+st_transform(world, crs = "+proj=moll") 
+
+```
+
+```{r}
+#| echo: false
+#| fig-align: center
+
+library(patchwork)
+
+plot1 <- st_transform(world, crs = "+proj=moll") %>% 
+  ggplot() +
+  geom_sf(fill = "white") +
+  theme_bw() +
+  labs(title = 'crs = "+proj=moll"') 
+
+plot2 <- st_transform(world, crs = 4326) %>% 
+  ggplot() +
+  geom_sf(fill = "white") +
+  theme_bw() + 
+  labs(title = 'crs = 4326 / WGS 84 -- GPS') + 
+  coord_sf()
+
+plot1 + plot2
+```
 
 
 ## We don't have so much time
@@ -327,9 +383,7 @@ Most CSS scholars use vector data.
 
 ```{r}
 #| output-location: column
-#| echo: -1
 
-par(mar = c(0, 0, 0, 0))
 # Subset
 south_provinces <- nz[nz$Island == "South", ]
 
@@ -345,10 +399,11 @@ nz_height_south <- nz_height[south_nz, ]
 ggplot() +
   geom_sf(data = nz[nz$Island == "South", ]) +
   geom_sf(data = nz_height_south, shape = 2, col = "red") +
-  theme_minimal()
+  theme_minimal() + 
+  coord_sf()
 ```
 
-. . .
+## Spatial data operations: joins
 
 A lot of other join possibilities: `st_intersects`, `st_touches`, `st_overlaps`, `st_contains`, `st_contains_properly`, `st_covers`, `st_within`, `st_covered_by`, `st_disjoint`.
 ```{r}
@@ -430,7 +485,7 @@ Open access data, scalable, low-cost.
 
 ::: {.column width="40%"}
 
-![](images/jean.png)
+![](images/jean.png){width=100%}
 :::
 ::::
 

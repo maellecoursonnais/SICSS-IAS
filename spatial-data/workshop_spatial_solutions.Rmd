@@ -1,5 +1,5 @@
 ---
-title: "workshop-scraping"
+title: "workshop-scraping (solutions)"
 author: "Maël Lecoursonnais"
 date: "2023-06-09"
 output: html_document
@@ -79,7 +79,25 @@ tm_basemap("Esri.WorldGrayCanvas") +
   2. Map the hospitals.
   
 ```{r}
-#...
+sklm_hospitals <- 
+  #Create the query and set the bounding box
+  opq(bbox = "Stockholm") %>% 
+  #Select the features
+  add_osm_feature(key = "amenity", value = "hospital") %>%
+  #Convert to osmdata_sf
+  osmdata_sf()
+
+sklm_hospitals_sf <- bind_rows(
+  st_make_valid(sklm_hospitals$osm_multipolygons),
+  sklm_hospitals$osm_polygons[!is.na(sklm_hospitals$osm_polygons$name), ],
+  sklm_hospitals$osm_points[!is.na(sklm_hospitals$osm_points$name), ]
+  ) 
+
+tm_basemap("Esri.WorldGrayCanvas") +
+  tm_shape(sklm_hospitals_sf) +
+  tm_polygons(popup.vars = "name") +
+  tm_shape(sklm_hospitals_sf[st_dimension(sklm_hospitals_sf) == 0, ]) +
+  tm_dots(popup.vars = "name")
 ```
 
 ## Exercise 2
@@ -87,7 +105,13 @@ tm_basemap("Esri.WorldGrayCanvas") +
 Using `osmdata::getbb`, get the boundaries of the city of Paris, and of Sweden. Check `?getbb`.
 
 ```{r}
-#...
+#Paris 
+paris <- getbb("Paris, France", format_out = 'sf_polygon', featuretype = "settlement")
+plot(st_geometry(paris))
+
+#Sweden
+sweden <- getbb("Sweden", format_out = 'sf_polygon', featuretype = "country")
+plot(sweden$multipolygon)
 ```
 
   

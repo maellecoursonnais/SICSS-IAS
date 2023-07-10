@@ -46,7 +46,7 @@ library(ggplot2)
 
 All in ![](https://www.r-project.org/logo/Rlogo.png){.center}!
 
-## Prerequisites {background-image="images/map_bgd.png" background-position="right" background-size="contain"}
+## Prerequisites
 
 ::: incremental
 -   ![](https://www.r-project.org/logo/Rlogo.png){.center} installed
@@ -119,6 +119,7 @@ image(volcano)
 ```{r}
 #| output-location: column
 #| echo: -1
+#| fig-asp: 1
 par(mar = c(0, 0, 0, 0))
 image(volcano)
 ```
@@ -281,6 +282,7 @@ plot(gc, axes = TRUE, lwd = 2, cex = 3,
 ```{r}
 #| echo: -1
 #| output-location: column
+
 par(mar = c(0, 0, 0, 0))
 nz <- spData::nz
 plot(st_geometry(nz))
@@ -455,8 +457,8 @@ Increasing availability of fine-grained, large-scale geographical data.
 Allows to extend standard research with new possibilities:
 
 ::: .incremental
-- Explore people's everyday mobility (Alessandretti)
-- Assess poverty with satellite data (Daoud, Science paper)
+- Explore people's everyday mobility
+- Assess poverty with satellite data
 - Extend segregation research to other parts of the activity space
 :::
 
@@ -507,5 +509,9 @@ Use **133,766,610** geotagged tweets from **375,504** individuals. Retrieve the 
 
 ## Workshop
 
-Check the `workshop_spatial.R` file
+Check the [`workshop_spatial.R`](https://github.com/IAS-LiU/SICSS-2023/blob/main/day_5_spatial_data/workshop_spatial.Rmd) file.
+
+Enjoy! 
+
+We have until 12.00-ish.
 
